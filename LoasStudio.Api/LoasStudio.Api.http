@@ -1,0 +1,44 @@
+@host = http://localhost:5080
+# 1) Ejecuta el login y copia el "token" de la respuesta en la variable de abajo
+@token = PEGA_AQUI_EL_TOKEN
+
+### Login (empleado o cliente). Clave de prueba de tus datos: Clave2026*
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{ "usuario": "TU_USUARIO", "contrasena": "Clave2026*" }
+
+### Registro publico (siempre crea un CLIENTE)
+POST {{host}}/api/auth/registro
+Content-Type: application/json
+
+{
+  "primerNombre": "Ana", "primerApellido": "Lopez",
+  "dni": "0801199912345", "fechaNacimiento": "1999-05-10",
+  "usuario": "ana.lopez", "contrasena": "Clave2026*",
+  "telefono": "+504 9999-0000", "correo": "ana@email.com"
+}
+
+### Servicios (cualquier sesion)
+GET {{host}}/api/servicios
+Authorization: Bearer {{token}}
+
+### --- Como CLIENTE ---
+GET {{host}}/api/mi/citas
+Authorization: Bearer {{token}}
+
+###
+GET {{host}}/api/mi/notificaciones
+Authorization: Bearer {{token}}
+
+### --- Como EMPLEADO ---
+GET {{host}}/api/clientes
+Authorization: Bearer {{token}}
+
+###
+GET {{host}}/api/notificaciones
+Authorization: Bearer {{token}}
+
+### Un cliente llamando esto debe recibir 403
+GET {{host}}/api/empleados
+Authorization: Bearer {{token}}
